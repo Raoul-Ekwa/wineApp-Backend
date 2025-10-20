@@ -1,1 +1,90 @@
-# wineApp
+# Documentation du projet WineApp Backend
+
+## Présentation
+
+Ce backend gère l’API pour l’application TheWineApp. Il utilise Node.js, Express et Sequelize pour interagir avec une base PostgreSQL.  
+Il permet la gestion des utilisateurs, des produits (vins) et des commandes.
+
+---
+
+## Structure des dossiers
+
+- **server.js** : Point d’entrée du serveur Express.
+- **.env** : Variables d’environnement (port, DB, JWT…).
+- **config/** : Configuration de la base de données.
+- **models/** : Schémas Sequelize pour les entités.
+- **controllers/** : Logique métier pour chaque ressource.
+- **routes/** : Définition des routes API.
+- **middlewares/** : Fonctions intermédiaires (auth, gestion des erreurs).
+- **utils/** : Fonctions utilitaires (ex : génération de token).
+
+---
+
+## Fonctionnalités principales
+
+### Authentification
+
+- **Inscription** : `POST /api/auth/register`  
+  Crée un utilisateur, hash le mot de passe, retourne un JWT.
+- **Connexion** : `POST /api/auth/login`  
+  Vérifie l’email et le mot de passe, retourne un JWT.
+
+### Produits
+
+- **Lister les produits** : `GET /api/products`  
+  Retourne tous les vins.
+- **Ajouter un produit** : `POST /api/products`  
+  Ajoute un vin (nom et prix obligatoires).
+
+### Commandes
+
+- **Créer une commande** : `POST /api/orders`  
+  Vérifie le stock, calcule le prix, crée la commande et met à jour le stock.
+- **Lister les commandes** : `GET /api/orders`  
+  Retourne toutes les commandes avec utilisateur et produit associés.
+
+---
+
+## Modèles de données
+
+- **User** : nom, email (unique), mot de passe (hashé).
+- **Product** : nom, description, prix, image, stock.
+- **Order** : quantité, prix total, relation avec User et Product.
+
+---
+
+## Lancement du projet
+
+1. Installer les dépendances :
+   ```sh
+   npm install
+   ```
+2. Configurer `.env` (voir exemple).
+3. Démarrer le serveur :
+   ```sh
+   npm run dev
+   ```
+   ou
+   ```sh
+   npm start
+   ```
+
+---
+
+## Notes
+
+- La synchronisation des tables se fait au démarrage (`server.js`).
+- Les routes sont préfixées par `/api/`.
+- Les erreurs sont gérées dans les contrôleurs.
+
+---
+
+Pour plus de détails, consulte les fichiers Readme dans chaque dossier :
+
+- `controllers/Readme.md`
+- `models/Readme.md`
+- `routes/Readme.md`
+- `middlewares/Readme.md`
+- `config/Readme.md`
+
+---
