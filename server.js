@@ -1,19 +1,23 @@
+// src/server.js
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const helmet = require("helmet"); // Sécurisation des headers HTTP
-const { connectDB, sequelize } = require("./config/db.js");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const morgan = require("morgan");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const rateLimit = require("express-rate-limit"); // Pour limiter les requêtes
-const morgan = require("morgan"); // Pour les logs HTTP détaillés
 
-// Routes
+// Import de la base de données
+const { connectDB, sequelize } = require("./config/db.js");
+
+// Import des routes
 const authRoutes = require("./routes/authRoutes.js");
 const productRoutes = require("./routes/productRoutes.js");
 const orderRoutes = require("./routes/orderRoutes.js");
+const cartRoutes = require("./routes/cartRoutes.js");
 
-// Charger les variables d'environnement
+// Chargement des variables d’environnement
 dotenv.config();
 
 // Connexion à la base de données
@@ -21,64 +25,73 @@ connectDB();
 
 const app = express();
 
-// Middleware pour sécuriser les headers HTTP
+//  Sécurisation des headers HTTP
 app.use(helmet());
 
-// Middleware pour gérer le CORS (Cross-Origin Resource Sharing)
+//  Autoriser les requêtes Cross-Origin
 app.use(cors());
 
-// Middleware pour parser le JSON dans les requêtes
+//  Middleware pour parser les requêtes JSON
 app.use(express.json());
 
-// Middleware de logging des requêtes HTTP en développement
+// 🪵 Logger HTTP (uniquement en développement)
 if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev")); // Utiliser 'dev' pour un log détaillé en développement
+  app.use(morgan("dev"));
 }
 
-// Middleware de rate limiting pour éviter les attaques par force brute
+//  Limiteur de requêtes pour éviter les abus
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limiter à 100 requêtes par IP pendant la fenêtre de 15 minutes
-  message: "Trop de requêtes, veuillez réessayer plus tard.",
+  max: 100, // Limiter à 100 requêtes par IP
+  message: { error: "Trop de requêtes, veuillez réessayer plus tard." },
 });
-app.use(limiter); // Appliquer le rate limiter globalement
+app.use("/api", limiter); // Limiter uniquement les endpoints API
 
-// Routes pour l'API
+//  Routes principales
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/cart", cartRoutes);
 
-// Swagger configuration pour la documentation de l'API
+//  Swagger - Documentation API
 const swaggerOptions = {
-  swaggerDefinition: {
+  definition: {
+    openapi: "3.0.0",
     info: {
       title: "WineApp API",
       version: "1.0.0",
-      description: "API pour l'application WineApp",
+      description: "Documentation de l'API WineApp",
     },
+    servers: [{ url: "http://localhost:5000", description: "Serveur local" }],
   },
-  apis: ["./routes/*.js"], // Ciblez vos fichiers de routes
+  apis: ["./routes/*.js"],
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Gestion des erreurs globales
+//  Gestion des erreurs 404
+app.use((req, res, next) => {
+  res.status(404).json({ message: "Ressource non trouvée" });
+});
+
+//  Gestion globale des erreurs (middleware)
 app.use((err, req, res, next) => {
-  console.error(`[ERROR] ${err.message}`, err.stack); // Logge l'erreur pour le debugging
+  console.error(`[ERROR] ${err.message}`);
   res.status(err.status || 500).json({
     message: err.message || "Erreur interne du serveur",
   });
 });
 
-// Démarrer le serveur
+//  Démarrage du serveur
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, async () => {
-  console.log(`🚀 Serveur sur http://localhost:${PORT}`);
+  console.log(` Serveur en cours d'exécution sur http://localhost:${PORT}`);
+
   try {
-    await await sequelize.sync(); // Créer ou ajuster les tables si nécessaire
-    console.log("✅ Tables PostgreSQL synchronisées");
+    await sequelize.sync({ alter: true }); // alter pour ajuster sans perte de données
+    console.log("  Base de données synchronisée avec succès !");
   } catch (err) {
-    console.error("❌ Erreur lors de la synchronisation des tables :", err);
+    console.error(" Erreur de synchronisation avec PostgreSQL :", err);
   }
 });

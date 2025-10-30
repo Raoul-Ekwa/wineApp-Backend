@@ -1,11 +1,10 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../config/db");
-const User = require("./User");
+const Cart = require("./Cart");
 const Product = require("./Product");
 
-// Modèle Cart
-const Cart = sequelize.define(
-  "Cart",
+const CartItem = sequelize.define(
+  "CartItem",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -26,13 +25,13 @@ const Cart = sequelize.define(
     },
   },
   {
-    tableName: "Carts",
+    tableName: "CartItems",
     timestamps: true,
   }
 );
 
 // Relations
-Cart.belongsTo(User, { foreignKey: "userId", onDelete: "CASCADE" });
-Cart.belongsTo(Product, { foreignKey: "productId", onDelete: "CASCADE" });
+CartItem.belongsTo(Cart, { foreignKey: "cartId", onDelete: "CASCADE" });
+CartItem.belongsTo(Product, { foreignKey: "productId", onDelete: "CASCADE" });
 
-module.exports = Cart;
+module.exports = CartItem;
