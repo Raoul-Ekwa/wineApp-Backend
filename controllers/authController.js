@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
 const User = require("../models/User.js");
 
-// ✅ Inscription (Register)
+//  Inscription (Register)
 const registerUser = async (req, res) => {
   try {
     const { name, email, telephone, password } = req.body;
@@ -46,7 +46,7 @@ const registerUser = async (req, res) => {
   }
 };
 
-// ✅ Connexion (Login) par email ou téléphone
+//  Connexion (Login) par email ou téléphone
 const loginUser = async (req, res) => {
   try {
     const { login, password } = req.body;
@@ -81,7 +81,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-// ✅ Demande de réinitialisation du mot de passe
+//  Demande de réinitialisation du mot de passe
 const passwordResetRequest = async (req, res) => {
   const { telephone } = req.body;
   try {
@@ -102,7 +102,7 @@ const passwordResetRequest = async (req, res) => {
 
     res.status(200).json({
       message: "Token de réinitialisation simulé pour dev",
-      simulatedToken: token, // ⚠️ token complet
+      simulatedToken: token, //  token complet
     });
   } catch (err) {
     console.error(err);
@@ -110,9 +110,9 @@ const passwordResetRequest = async (req, res) => {
   }
 };
 
-// ✅ Réinitialisation du mot de passe
+//  Réinitialisation du mot de passe
 const resetPassword = async (req, res) => {
-  const { token } = req.params; // ✅ token depuis l'URL
+  const { token } = req.params; //  token depuis l'URL
   const { newPassword } = req.body; // mot de passe depuis le corps
 
   try {

@@ -2,7 +2,7 @@ const Order = require("../models/Order.js");
 const Product = require("../models/Product.js");
 const User = require("../models/User.js");
 
-// ✅ Créer une commande
+//  Créer une commande
 const createOrder = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
@@ -40,7 +40,7 @@ const createOrder = async (req, res) => {
   }
 };
 
-// ✅ Récupérer toutes les commandes
+//  Récupérer toutes les commandes
 const getOrders = async (req, res) => {
   try {
     const orders = await Order.findAll({
@@ -51,12 +51,12 @@ const getOrders = async (req, res) => {
     });
     res.json(orders);
   } catch (err) {
-    console.error("❌ Erreur getOrders:", err);
+    console.error(" Erreur getOrders:", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
 
-// ✅ Récupérer une commande spécifique
+//  Récupérer une commande spécifique
 const getOrderById = async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id, {

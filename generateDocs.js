@@ -2,13 +2,13 @@ import fs from "fs";
 import path from "path";
 import { execSync } from "child_process";
 
-// 🧠 Modèle Ollama à utiliser
+//  Modèle Ollama à utiliser
 const OLLAMA_MODEL = "llama3"; // ou "codellama" si tu l’as installé
 
-// 📦 Extensions de fichiers à inclure
+//  Extensions de fichiers à inclure
 const INCLUDED_EXT = [".js", ".ts"];
 
-// 📄 Lecture d’un fichier .ollamaignore (si présent)
+//  Lecture d’un fichier .ollamaignore (si présent)
 function loadIgnoreList() {
   const defaultIgnores = [
     "node_modules",
@@ -32,7 +32,7 @@ function loadIgnoreList() {
   return defaultIgnores;
 }
 
-// 📚 Lecture récursive du projet
+//  Lecture récursive du projet
 function readFilesRecursively(dir, ignores) {
   let filesContent = "";
   const items = fs.readdirSync(dir);
@@ -53,15 +53,15 @@ function readFilesRecursively(dir, ignores) {
   return filesContent;
 }
 
-// 🚀 Fonction principale
+//  Fonction principale
 function generateDocs() {
-  console.log("📁 Lecture du projet Express...");
+  console.log(" Lecture du projet Express...");
   const ignoreList = loadIgnoreList();
 
   const srcDir = fs.existsSync("./src") ? "./src" : ".";
   const projectContent = readFilesRecursively(srcDir, ignoreList);
 
-  console.log("🧠 Génération de la documentation avec Ollama...");
+  console.log(" Génération de la documentation avec Ollama...");
   const section7 = `7. Explication des fichiers \`config/\` et \`utils/\``;
 
   const prompt = `
@@ -102,9 +102,9 @@ ${projectContent}
 
     // Écrire la documentation générée
     fs.writeFileSync("DOCUMENTATION.md", result);
-    console.log("✅ Documentation générée : DOCUMENTATION.md");
+    console.log(" Documentation générée : DOCUMENTATION.md");
   } catch (err) {
-    console.error("❌ Erreur pendant la génération :", err.message);
+    console.error(" Erreur pendant la génération :", err.message);
   }
 }
 

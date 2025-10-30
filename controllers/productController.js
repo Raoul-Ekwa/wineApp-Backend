@@ -1,6 +1,6 @@
 const Product = require("../models/Product.js");
 
-// ✅ Récupérer tous les produits
+//  Récupérer tous les produits
 const getProducts = async (req, res) => {
   try {
     const products = await Product.findAll();
@@ -10,7 +10,7 @@ const getProducts = async (req, res) => {
   }
 };
 
-// ✅ Ajouter un produit
+//  Ajouter un produit
 const createProduct = async (req, res) => {
   try {
     const { name, description, price, image, stock } = req.body;
@@ -33,7 +33,7 @@ const createProduct = async (req, res) => {
   }
 };
 
-// ✅ Récupérer un produit par ID
+//  Récupérer un produit par ID
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
@@ -45,7 +45,7 @@ const getProductById = async (req, res) => {
   }
 };
 
-// ✅ Mettre à jour un produit
+//  Mettre à jour un produit
 const updateProduct = async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
@@ -68,7 +68,7 @@ const updateProduct = async (req, res) => {
   }
 };
 
-// ✅ Supprimer un produit
+//  Supprimer un produit
 const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);

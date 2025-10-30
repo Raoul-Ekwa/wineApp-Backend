@@ -9,14 +9,14 @@ async function main() {
 
     // Synchronisation des modèles (optionnel)
     await sequelize.sync({ alter: true });
-    console.log("📦 Modèles synchronisés.");
+    console.log(" Modèles synchronisés.");
 
     // Vérifier si l'utilisateur existe déjà
     const existingUser = await User.findOne({
       where: { email: "jean.dupont@example.com" },
     });
     if (existingUser) {
-      console.log("⚠️ L’utilisateur existe déjà !");
+      console.log(" L’utilisateur existe déjà !");
       return;
     }
 
@@ -28,13 +28,13 @@ async function main() {
       password: "secret123",
     });
 
-    console.log("✅ Utilisateur créé :", newUser.toJSON());
+    console.log(" Utilisateur créé :", newUser.toJSON());
 
     // Fermer la connexion
     await sequelize.close();
-    console.log("🔒 Connexion fermée.");
+    console.log(" Connexion fermée.");
   } catch (err) {
-    console.error("❌ Erreur :", err);
+    console.error(" Erreur :", err);
   }
 }
 

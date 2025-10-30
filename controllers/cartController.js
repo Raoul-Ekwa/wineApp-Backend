@@ -26,7 +26,7 @@ const addToCart = async (req, res) => {
       await existingItem.save();
 
       return res.status(200).json({
-        message: "✅ Quantité mise à jour dans le panier.",
+        message: " Quantité mise à jour dans le panier.",
         item: existingItem,
       });
     }
@@ -49,7 +49,7 @@ const addToCart = async (req, res) => {
   }
 };
 
-// 📦 Récupérer tous les articles du panier de l’utilisateur
+//  Récupérer tous les articles du panier de l’utilisateur
 const getCartItems = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -72,7 +72,7 @@ const getCartItems = async (req, res) => {
   }
 };
 
-// 🔄 Mettre à jour la quantité d’un article dans le panier
+//  Mettre à jour la quantité d’un article dans le panier
 const updateCartItem = async (req, res) => {
   try {
     const { id } = req.params;
@@ -83,12 +83,12 @@ const updateCartItem = async (req, res) => {
     if (!cartItem) {
       return res
         .status(404)
-        .json({ message: "❌ Article non trouvé dans votre panier." });
+        .json({ message: " Article non trouvé dans votre panier." });
     }
 
     const product = await Product.findByPk(cartItem.productId);
     if (!product) {
-      return res.status(404).json({ message: "❌ Produit non trouvé." });
+      return res.status(404).json({ message: " Produit non trouvé." });
     }
 
     // Mise à jour
@@ -97,7 +97,7 @@ const updateCartItem = async (req, res) => {
     await cartItem.save();
 
     res.status(200).json({
-      message: "✅ Panier mis à jour avec succès.",
+      message: " Panier mis à jour avec succès.",
       item: cartItem,
     });
   } catch (err) {
@@ -106,7 +106,7 @@ const updateCartItem = async (req, res) => {
   }
 };
 
-// ❌ Supprimer un article du panier
+//  Supprimer un article du panier
 const removeCartItem = async (req, res) => {
   try {
     const { id } = req.params;
@@ -116,18 +116,18 @@ const removeCartItem = async (req, res) => {
     if (!cartItem) {
       return res
         .status(404)
-        .json({ message: "❌ Article non trouvé dans votre panier." });
+        .json({ message: " Article non trouvé dans votre panier." });
     }
 
     await cartItem.destroy();
-    res.status(200).json({ message: "🗑️ Article supprimé du panier." });
+    res.status(200).json({ message: " Article supprimé du panier." });
   } catch (err) {
     console.error("Erreur dans removeCartItem:", err);
     res.status(500).json({ message: "Erreur serveur: " + err.message });
   }
 };
 
-// 🧾 Optionnel : Vider tout le panier d’un utilisateur
+//  Optionnel : Vider tout le panier d’un utilisateur
 const clearCart = async (req, res) => {
   try {
     const userId = req.user.id;

@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.js");
 
-// ✅ Créer un nouvel utilisateur (inscription)
+//  Créer un nouvel utilisateur (inscription)
 const createUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -30,7 +30,7 @@ const createUser = async (req, res) => {
   }
 };
 
-// ✅ Se connecter (authentification)
+//  Se connecter (authentification)
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -58,7 +58,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-// ✅ Obtenir les informations de l'utilisateur
+//  Obtenir les informations de l'utilisateur
 const getUser = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id); // Utilise l'ID de l'utilisateur dans le token

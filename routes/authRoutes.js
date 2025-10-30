@@ -8,16 +8,16 @@ const {
 
 const router = express.Router();
 
-// 🔹 Route pour l'inscription
+//  Route pour l'inscription
 router.post("/register", registerUser);
 
-// 🔹 Route pour la connexion
+//  Route pour la connexion
 router.post("/login", loginUser);
 
-// 🔹 Route pour demander la réinitialisation du mot de passe
+//  Route pour demander la réinitialisation du mot de passe
 router.post("/password-reset", passwordResetRequest);
 
-// 🔹 Route pour réinitialiser le mot de passe avec le token dans l'URL
+//  Route pour réinitialiser le mot de passe avec le token dans l'URL
 router.post("/password-reset/:token", resetPassword);
 
 module.exports = router;

@@ -4,7 +4,7 @@ const Cart = require("../models/Cart");
 const Product = require("../models/Product");
 const authMiddleware = require("../middlewares/authMiddleware");
 
-// ➕ Ajouter un produit au panier
+//  Ajouter un produit au panier
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const { productId, quantity } = req.body;
@@ -39,14 +39,14 @@ router.post("/", authMiddleware, async (req, res) => {
 
     res
       .status(201)
-      .json({ message: "Produit ajouté au panier ✅", item: cartItem });
+      .json({ message: "Produit ajouté au panier ", item: cartItem });
   } catch (err) {
     console.error("Erreur ajout panier :", err);
     res.status(500).json({ message: "Erreur serveur", error: err.message });
   }
 });
 
-// 📦 Récupérer tous les produits du panier
+//  Récupérer tous les produits du panier
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -63,7 +63,7 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// 🔄 Mettre à jour la quantité d'un produit
+//  Mettre à jour la quantité d'un produit
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const { quantity } = req.body;
@@ -85,13 +85,13 @@ router.put("/:id", authMiddleware, async (req, res) => {
       ],
     });
 
-    res.json({ message: "Quantité mise à jour ✅", item: updatedCartItem });
+    res.json({ message: "Quantité mise à jour ", item: updatedCartItem });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// ❌ Supprimer un produit du panier
+//  Supprimer un produit du panier
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const cartItem = await Cart.findByPk(req.params.id);
@@ -99,18 +99,18 @@ router.delete("/:id", authMiddleware, async (req, res) => {
       return res.status(404).json({ message: "Article non trouvé" });
 
     await cartItem.destroy();
-    res.status(200).json({ message: "Produit supprimé du panier ✅" });
+    res.status(200).json({ message: "Produit supprimé du panier " });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// 🧹 Vider complètement le panier
+//  Vider complètement le panier
 router.delete("/", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id;
     await Cart.destroy({ where: { userId } });
-    res.json({ message: "Panier vidé avec succès 🧺" });
+    res.json({ message: "Panier vidé avec succès " });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

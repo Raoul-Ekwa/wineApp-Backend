@@ -34,7 +34,7 @@ app.use(cors());
 //  Middleware pour parser les requêtes JSON
 app.use(express.json());
 
-// 🪵 Logger HTTP (uniquement en développement)
+//  Logger HTTP (uniquement en développement)
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
